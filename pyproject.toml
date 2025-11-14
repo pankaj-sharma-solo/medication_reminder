@@ -1,0 +1,25 @@
+[project]
+name = "ava"
+version = "0.1.0"
+description = "Set of agent based on langgraph tech stack to solve medication adherence."
+authors = [
+    {name = "Pankaj Sharma",email = "pankajsharma96277@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13,<4.0.0"
+packages=[{include="ava", from="src"}]
+dependencies = [
+    "fastapi (>=0.121.1,<0.122.0)",
+    "uvicorn (>=0.38.0,<0.39.0)",
+    "langchain-google-genai (>=3.0.3,<4.0.0)",
+    "langgraph (>=1.0.3,<2.0.0)",
+    "langchain (>=1.0.5,<2.0.0)",
+    "apscheduler (>=3.11.1,<4.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ava = "src.ava.main:main"

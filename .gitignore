@@ -1,0 +1,4 @@
+.venv
+notebooks
+poetry.lock
+.idea
