@@ -1,31 +1,12 @@
 import time
 from typing import Dict, Any, Optional
 from langchain_core.tools import tool
-
-# --- 1. Simulated In-Memory Database (DB) ---
-# In a real application, this would be a connection to a secure database.
-MEDICATION_DB: Dict[str, Dict[str, Any]] = {
-    "SCH-001": {
-        "schedule_id": "SCH-001",
-        "patient_id": "USER-456",
-        "medication": "Amlodipine 10mg",
-        "time_of_day": "09:00",
-        "phone_number": "+1-555-123-4567"
-    },
-    "SCH-002": {
-        "schedule_id": "SCH-002",
-        "patient_id": "USER-456",
-        "medication": "Simvastatin 40mg",
-        "time_of_day": "18:00",
-        "phone_number": "+1-555-123-4567"
-    }
-}
+from ..dao.db import MEDICATION_DB
 
 
-@tool(parse_docstring=True)
 def fetch_medication_data(schedule_id: str) -> Optional[Dict[str, Any]]:
     """
-    TOOL: Fetches specific medication schedule data from the database.
+    Fetches specific medication schedule data from the database.
     This is the first step of the Sub-Agent's task.
     """
     print(f"[SubAgent:Data] Attempting to fetch data for schedule_id: {schedule_id}")
@@ -39,10 +20,9 @@ def fetch_medication_data(schedule_id: str) -> Optional[Dict[str, Any]]:
     return data
 
 
-@tool(parse_docstring=True)
 def publish_reminder_via_agora(medication_data: Dict[str, Any]) -> str:
     """
-    TOOL: Simulates initiating an outbound call/reminder via Agora AI.
+    Simulates initiating an outbound call/reminder via Agora AI.
     This is the final action of the Sub-Agent's task.
     """
     if not medication_data:
@@ -68,10 +48,10 @@ def publish_reminder_via_agora(medication_data: Dict[str, Any]) -> str:
 
 
 # --- 3. Sub-Agent Task Group (The single tool the Orchestrator calls) ---
-@tool(parse_docstring=True)
+@tool
 def process_reminder_call(schedule_id: str, patient_id: str) -> str:
     """
-    SUB-AGENT TASK: Groups data fetching and the external API call into one cohesive tool.
+    Groups data fetching and the external API call into one cohesive tool.
     This is the function the Orchestrator should delegate to.
     """
     print(f"\n[{time.strftime('%H:%M:%S')}] [Orchestrator:DELEGATE] Delegation received for {schedule_id}.")

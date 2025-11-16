@@ -1,7 +1,8 @@
 from typing import Literal, Annotated
 from typing_extensions import TypedDict, NotRequired
 from langchain.agents import AgentState
-from pydantic import BaseModel, Field, PositiveInt, Optional
+from pydantic import BaseModel, Field, PositiveInt
+from typing import Optional
 
 class Todo(TypedDict):
     """A structured task item for tracking progress through complex workflows.

@@ -24,20 +24,11 @@ class SubAgent(TypedDict):
 
 
 def _create_task_tool(tools, subagents: list[SubAgent], model: BaseChatModel, state_schema):
-    """Create a task delegation tool that enables context isolation through sub-agents.
-
-        This function implements the core pattern for spawning specialized sub-agents with
-        isolated contexts, preventing context clash and confusion in complex multistep tasks.
-
-        Args:
-            tools: List of available tools that can be assigned to sub-agents
-            subagents: List of specialized sub-agent configurations
-            model: The language model to use for all agents
-            state_schema: The state schema (typically DeepAgentState)
-
-        Returns:
-            A 'task' tool that can delegate work to specialized sub-agents
-        """
+    """
+    Create a task delegation tool that enables context isolation through sub-agents.
+    This function implements the core pattern for spawning specialized sub-agents with
+    isolated contexts, preventing context clash and confusion in complex multistep tasks.
+    """
     # Create agent registry
     agents = {}
 
@@ -72,8 +63,8 @@ def _create_task_tool(tools, subagents: list[SubAgent], model: BaseChatModel, st
             state: Annotated[DeepAgentState, InjectedState],
             tool_call_id: Annotated[str, InjectedToolCallId],
     ):
-        """Delegate a task to a specialized sub-agent with isolated context.
-
+        """
+        Delegate a task to a specialized sub-agent with isolated context.
         This creates a fresh context for the sub-agent containing only the task description,
         preventing context pollution from the parent agent's conversation history.
         """

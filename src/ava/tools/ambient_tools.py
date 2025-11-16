@@ -17,7 +17,7 @@ if not SCHEDULER.running:
 
 
 # --- 3. Ambient Agent's Core Action (Pushes to Orchestrator) ---
-@tool(parse_docstring=True)
+@tool
 def ambient_agent_trigger_action(schedule_id: str, patient_id: str) -> None:
     """
     This function is executed by APScheduler at the scheduled time.
@@ -37,10 +37,10 @@ def ambient_agent_trigger_action(schedule_id: str, patient_id: str) -> None:
 
 
 # --- 4. Ambient Agent's Tool (Called by Orchestrator/Setup) ---
-@tool(parse_docstring=True)
+# @tool
 def commit_schedule_and_queue_task(schedule_id: str, patient_id: str, time_str: str) -> str:
     """
-    TOOL: Creates a new, scheduled job in the in-memory APScheduler.
+    Creates a new, scheduled job in the in-memory APScheduler.
     The job will call 'ambient_agent_trigger_action' at the specified time.
     Time format must be HH:MM (e.g., '09:00').
     """

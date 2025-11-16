@@ -25,24 +25,14 @@ def ls(state: Annotated[DeepAgentState, InjectedState]) -> list[str]:
     return list(state.get("files", {}).keys())
 
 
-@tool(description=READ_FILE_DESCRIPTION, parse_docstring=True)
+@tool(description=READ_FILE_DESCRIPTION)
 def read_file(
     file_path: str,
     state: Annotated[DeepAgentState, InjectedState],
     offset: int = 0,
     limit: int = 2000,
 ) -> str:
-    """Read file content from virtual filesystem with optional offset and limit.
-
-    Args:
-        file_path: Path to the file to read
-        state: Agent state containing virtual filesystem (injected in tool node)
-        offset: Line number to start reading from (default: 0)
-        limit: Maximum number of lines to read (default: 2000)
-
-    Returns:
-        Formatted file content with line numbers, or error message if file not found
-    """
+    """Read file content from virtual filesystem with optional offset and limit"""
     files = state.get("files", {})
     if file_path not in files:
         return f"Error: File '{file_path}' not found"
@@ -66,7 +56,7 @@ def read_file(
     return "\n".join(result_lines)
 
 
-@tool(description=WRITE_FILE_DESCRIPTION, parse_docstring=True)
+@tool(description=WRITE_FILE_DESCRIPTION)
 def write_file(
     file_path: str,
     content: str,
@@ -74,15 +64,6 @@ def write_file(
     tool_call_id: Annotated[str, InjectedToolCallId],
 ) -> Command:
     """Write content to a file in the virtual filesystem.
-
-    Args:
-        file_path: Path where the file should be created/updated
-        content: Content to write to the file
-        state: Agent state containing virtual filesystem (injected in tool node)
-        tool_call_id: Tool call identifier for message response
-
-    Returns:
-        Command to update agent state with new file content
     """
     files = state.get("files", {})
     files[file_path] = content

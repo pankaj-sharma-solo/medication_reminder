@@ -15,20 +15,33 @@ from ..prompts import WRITE_TODOS_DESCRIPTION
 from ..states.state import Todo, DeepAgentState
 
 
-@tool(description=WRITE_TODOS_DESCRIPTION, parse_docstring=True)
+@tool(description=WRITE_TODOS_DESCRIPTION)
 def write_todo(
         todos: List[Todo],
         tool_call_id: Annotated[str, InjectedToolCallId]
 ) -> Command:
     """Create or update the agent's TODO list for task planning and tracking.
 
-        Args:
-            todos: List of Todo items with content and status
-            tool_call_id: Tool call identifier for message response
+    <Parameters>
+    todos: List of Todo items with content and status
+    tool_call_id: Tool call identifier for message response
+    </Parameters>
 
-        Returns:
-            Command to update agent state with new TODO list
-        """
+    <Returns>
+    Command to update agent state with new TODO list
+    </Returns>
+
+    **MANDATORY FORMAT EXAMPLE:**
+   ```json
+   {
+    "todos": [
+        { "content": "Parse user request for medication details (Metformin 500mg, 8 AM).", "status": "pending" },
+        { "content": "Save extracted structured data to file system.", "status": "pending" },
+        { "content": "Delegate validation and scheduling to the medication-agent.", "status": "pending" }
+    ]
+   }
+   ```
+    """
     return Command(
         update={
             'todos': todos,
@@ -39,23 +52,15 @@ def write_todo(
     )
 
 
-@tool(parse_docstring=True)
+@tool
 def read_todo(
         state: DeepAgentState,
         tool_call_id: Annotated[str, InjectedToolCallId]
 ) -> str:
     """Read the current TODO list from the agent state.
-
-        This tool allows the agent to retrieve and review the current TODO list
-        to stay focused on remaining tasks and track progress through complex workflows.
-
-        Args:
-            state: Injected agent state containing the current TODO list
-            tool_call_id: Injected tool call identifier for message tracking
-
-        Returns:
-            Formatted string representation of the current TODO list
-        """
+    This tool allows the agent to retrieve and review the current TODO list
+    to stay focused on remaining tasks and track progress through complex workflows.
+    """
     todos = state.get("todos", [])
     if not todos:
         return "No todos currently in the list."
